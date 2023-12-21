@@ -1,0 +1,10 @@
+# ignore all .pdf files
+*.pdf
+.firebase/
+node_modules/
+public/
+src/
+data_processing/
+testing_api.py
+id_site
+id_site.pub

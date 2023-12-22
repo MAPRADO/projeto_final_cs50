@@ -1,0 +1,6 @@
+pandas
+flask
+jsonify
+gunicorn
+requests
+json

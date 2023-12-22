@@ -1,4 +1,5 @@
 import pandas as pd
+import api_inmetro
 from flask import Flask, jsonify
 
 app = Flask(__name__)

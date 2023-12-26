@@ -1,1 +1,1 @@
-web: gunicorn api_inmetro.py.wsgi
+web: gunicorn api_inmetro.py

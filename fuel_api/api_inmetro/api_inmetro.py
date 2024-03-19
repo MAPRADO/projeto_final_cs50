@@ -5,70 +5,14 @@ from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
-# Os endereços são baseados na plataforma "PythonAnywhere"
-# Endereço da base de dados:
+# The addresses are based on the platform "PythonAnywhere"
+# Database address:
 # 'https://www.pythonanywhere.com/user/MaPrado/files/home/MaPrado/mysite/car_data_2023_test.xlsx'
 
-# Testando se a API está no ar
+# Testing whether the API is live
 @app.route('/')
 def homepage():
     return 'A API está no ar'
-
-
-# Seleciona todos os nomes das tabelas da base (Testes OK)
-@app.route('/teste')
-def get_data():
-    #reader = pd.read_excel('https://www.pythonanywhere.com/user/MaPrado/files/home/MaPrado/mysite/car_data_2023_test.xlsx')
-    reader = pd.read_excel('car_data_2023_test.xlsx')
-    data = []
-    for row in reader:
-        data.append(row)
-    return json.dumps(data)
-
-
-# Mostra toda base como um dicionário em sequencia (Testes OK)
-@app.route('/teste_dois')
-def dados():
-    reader = pd.read_excel('https://www.pythonanywhere.com/user/MaPrado/files/home/MaPrado/mysite/car_data_2023_test.xlsx')
-    dados = reader.to_dict(orient='records')
-    return json.dumps(dados)
-
-# Este código está correto para a coluna do motor, filtra as 5 primeiras linhas (Testes OK)
-@app.route('/motor')
-def motor():
-    #tabela = pd.read_excel('https://www.pythonanywhere.com/user/MaPrado/files/home/MaPrado/mysite/car_data_2023_test.xlsx')
-    tabela = pd.read_excel('car_data_2023_test.xlsx')
-    data = []
-    for row in tabela['Motor'].head():
-        data.append(row)
-    return json.dumps(data)
-
-
-# Este codigo está correto para filtro de uma coluna com uma linha, com parametros variáveis (Testes OK)
-@app.route('/get_row', methods=['GET'])
-def get_row():
-    try:
-        # Obter parâmetros da consulta
-        column_name = request.args.get('column_name')
-        value = request.args.get('value')
-
-        # Verificar se os parâmetros foram fornecidos
-        if not column_name or not value:
-            return jsonify({'error': 'Forneça parâmetros válidos: column_name e value'})
-
-        #df = pd.read_excel('https://www.pythonanywhere.com/user/MaPrado/files/home/MaPrado/mysite/car_data_2023_test.xlsx')
-        df = pd.read_excel('car_data_2023_test.xlsx')
-
-        # Verificar se a coluna existe no DataFrame
-        if column_name not in df.columns:
-            return jsonify({'error': f'A coluna {column_name} não existe no DataFrame'})
-
-        # Selecionar a linha com base no valor da coluna
-        row = df[df[column_name] == value].iloc[0].to_dict()
-        return json.dumps(row)
-    except IndexError:
-        return jsonify({'error': 'Nenhuma linha encontrada'})
-
 
 # Main code for creating the API and return filters (OK)
 @app.route('/api/filter', methods=['GET'])
@@ -82,9 +26,9 @@ def filter_data():
     col3_name = request.args.get('col3_name')
     value3 = request.args.get('value3')
 
-    #tabela = pd.read_excel('https://www.pythonanywhere.com/user/MaPrado/files/home/MaPrado/mysite/car_data_2023_test.xlsx')
+    #table = pd.read_excel('https://www.pythonanywhere.com/user/MaPrado/files/home/MaPrado/mysite/car_data_2023_test.xlsx')
     # Excel file that contains the car data. This file is being used as the
-    # data source for the API endpoints.
+    # local data source for the API endpoints.
     table = pd.read_excel('car_data_2023_test.xlsx')
     
     # Apply the filter based on the provided column names and their respective values
@@ -115,7 +59,6 @@ def filter_data():
             "Modelo": row[2],
             "Motor": row[4],
             "Versao": row[3],
-
         }
         
     # Return the result

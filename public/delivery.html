@@ -1,0 +1,33 @@
+{% extends "index.html" %}
+
+{% block title %}
+    Delivery
+{% endblock %}
+
+{% block table %}
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>Motor</th>
+            <th>Alcohol</th>
+            <th>Gasoline</th>
+            <th>Advantage</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- TODO: Loop through the database entries to display them in this table -->
+        {% for row in linhas %}
+        <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[3] }}</td>
+            <td>{{ row[4] }}</td>
+            <td>{{ row[5] }}</td>
+            <td>{{ row[6] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+{% endblock %}

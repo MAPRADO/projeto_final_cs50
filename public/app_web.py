@@ -33,7 +33,12 @@ def requisition():
     selectBrand = request.form["selectBrand"]
     selectModel = request.form["selectModel"]
     selectMotor = request.form["selectMotor"]
-    #advantage = request. form["advantage"]
+    
+    # Substituição de vírgula por ponto
+    if alcohol and "," in alcohol:
+        alcohol = alcohol.replace(",", ".")
+    if gasoline and "," in gasoline:
+        gasoline = gasoline.replace(",", ".")
     
     # Construir a consulta a API
     value1 = selectBrand
@@ -58,13 +63,17 @@ def requisition():
         # Processar os dados da resposta
         print("Consulta à API bem-sucedida!")
         
+        # Adicionando dados ao dicionario
         resposta_api = resposta_api.json()
         shared_parameters['resposta_api'] = resposta_api
-        shared_parameters['user_name']  = name
-        shared_parameters['alcohol']  = alcohol
-        shared_parameters['gasoline']  = gasoline
         
-        # Testes das sáidas da api e dicionário
+        chave_dinamica = list(shared_parameters['resposta_api'].keys())[0]
+        
+        shared_parameters['resposta_api'][chave_dinamica]['user_name'] = name
+        shared_parameters['resposta_api'][chave_dinamica]['alcohol'] = alcohol
+        shared_parameters['resposta_api'][chave_dinamica]['gasoline'] = gasoline
+        
+        # Testes das saidas da API crua e dicionário com entradas adicionadas
         print(resposta_api)
         print(shared_parameters)
         
@@ -89,22 +98,36 @@ def delivery():
         # Extrair a chave dinamicamente
         chave_dinamica = list(shared_parameters['resposta_api'].keys())[0]
         
-        name = shared_parameters['user_name']
+        name = shared_parameters['resposta_api'][chave_dinamica]['user_name']
         selectBrand = shared_parameters['resposta_api'][chave_dinamica]['Marca']
         selectModel = shared_parameters['resposta_api'][chave_dinamica]['Modelo']
         selectMotor = shared_parameters['resposta_api'][chave_dinamica]['Motor']
-        alcohol = shared_parameters['alcohol']
-        gasoline = shared_parameters['gasoline']
+        alcohol = shared_parameters['resposta_api'][chave_dinamica]['alcohol']
+        gasoline = shared_parameters['resposta_api'][chave_dinamica]['gasoline']
         
-        # Valor a ser calculado pela função do main_application.py
-        shared_parameters['advantage'] = 'vantagem'
+        # Valores a serem calculados pela função "main_application.py"
+        alcohol_city = shared_parameters['resposta_api'][chave_dinamica]['Etanol - cidade']
+        gasoline_city = shared_parameters['resposta_api'][chave_dinamica]['Gasolina - cidade']
         
-        # Inserindo os dados no banco
+        # Chamando a função "fplus" e utilizando os argumentos do formulário e da API
+        advantage = fplus(alcohol, gasoline, alcohol_city, gasoline_city)
+        
+        # Testando resultado final
+        print(advantage)
+        
+        # Adicionando "advantage" ao dicionario e resgatando
+        shared_parameters['resposta_api'][chave_dinamica]['advantage'] = advantage
+        advantage = shared_parameters['resposta_api'][chave_dinamica]['advantage']
+        
+        # Imprimindo o dicionario completo
+        print(shared_parameters)
+        
+        # Inserindo os valores no banco de dados
         valores_name = (name, selectBrand, selectModel, selectMotor,)
         cursor.execute("INSERT INTO name (user_name, car_brand, model, motor) VALUES (?, ?, ?, ?)", valores_name)
         name_id = cursor.lastrowid  # Obtendo o último id inserido
         
-        valores_advantage = (alcohol, gasoline, 'vantagem', name_id)
+        valores_advantage = (alcohol, gasoline, advantage, name_id)
         cursor.execute("INSERT INTO advantage (alcohol_value, gasoline_value, advantage, id_name) VALUES (?, ?, ?, ?)", valores_advantage)
         
         connect.commit()
@@ -115,6 +138,8 @@ def delivery():
         advantage.alcohol_value, advantage.gasoline_value, advantage.advantage 
         FROM name
         INNER JOIN advantage ON name.id = advantage.id_name
+        ORDER BY name.id DESC
+        LIMIT 10
         """)
         
         linhas = cursor.fetchall()

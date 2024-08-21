@@ -9,6 +9,8 @@ from main_application import fplus
 
 # Configure the application
 app = Flask(__name__)
+#app = Flask(__name__, static_folder='public/static', templates_folder='public/templates')
+#app = Flask(__name__, static_folder='public')
 
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -119,7 +121,7 @@ def delivery():
         shared_parameters['resposta_api'][chave_dinamica]['advantage'] = advantage
         advantage = shared_parameters['resposta_api'][chave_dinamica]['advantage']
         
-        # Imprimindo o dicionario completo
+        # Teste imprimindo o dicionario completo
         print(shared_parameters)
         
         # Inserindo os valores no banco de dados

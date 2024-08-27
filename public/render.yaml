@@ -1,0 +1,14 @@
+# Exported from Render on 2024-08-24T06:16:21Z
+services:
+- type: web
+  name: Api_CS50
+  runtime: python
+  repo: https://github.com/MAPRADO/projeto_final_cs50
+  plan: free
+  envVars:
+  - key: NODE_VERSION
+    sync: false
+  region: oregon
+  buildCommand: pip install -r requirements.txt
+  startCommand: gunicorn app_web.py:app
+version: "1"

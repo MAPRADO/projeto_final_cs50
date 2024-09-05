@@ -10,6 +10,10 @@ id_project_cs50.pub
 api_testing.py
 query_data.py
 query.sql
-public/my_database.db
 final_project_cs50/my_database.db
 Trash/
+venv/
+.env/
+db_baseline/
+__pycache__/
+

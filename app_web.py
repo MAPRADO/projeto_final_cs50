@@ -9,8 +9,6 @@ from main_application import fplus
 
 # Configure the application
 app = Flask(__name__)
-#app = Flask(__name__, static_folder='public/static', templates_folder='public/templates')
-#app = Flask(__name__, static_folder='public')
 
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -94,7 +92,7 @@ def requisition():
 @app.route("/delivery", methods=["GET", "POST"])
 def delivery():
     try:
-        connect = sqlite3.connect('C:/Users/prado/final_project_cs50/public/db/my_database.db')
+        connect = sqlite3.connect('C:/Users/prado/final_project_cs50/db/my_database.db')
         cursor = connect.cursor()
         
         # Extrair a chave dinamicamente

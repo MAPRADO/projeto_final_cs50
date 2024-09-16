@@ -26,7 +26,6 @@ def fplus(arg1, arg2, arg3, arg4):
         return 'Gasoline'
 
 
-
 """
 # Chamando a função para testes
 #teste = fplus(3.63, 5.61, 9.8, 14.2)

@@ -4,7 +4,7 @@ import json
 from flask import Flask, jsonify, redirect, render_template, request
 from main_application import fplus
 
-# Connection with the database
+# Connection with the database(conectando na rota delivery)
 #connect = sqlite3.connect('db/my_database.db')
 
 # Configure the application

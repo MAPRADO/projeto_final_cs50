@@ -1,5 +1,0 @@
-pandas
-flask
-jsonify
-gunicorn
-requests

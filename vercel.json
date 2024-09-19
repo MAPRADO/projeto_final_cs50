@@ -12,9 +12,7 @@
             "dest": "app_web.py"
         }
     ],
-    "env": [
-        {
-            "PYTHON_VERSION": "3.10.5"
-        }
-    ]
+    "env": {
+        "PYTHON_VERSION": "3.10.5"
+    }
 }

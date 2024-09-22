@@ -1,3 +1,4 @@
+import os
 import sqlite3
 import requests
 import json
@@ -6,6 +7,13 @@ from main_application import fplus
 
 # Connection with the database(conectando na rota delivery)
 #connect = sqlite3.connect('db/my_database.db')
+
+# Obtém o caminho completo do diretório onde o arquivo Python está localizado
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Constrói o caminho relativo para o banco de dados
+DATABASE_PATH = os.path.join(BASE_DIR, 'db', 'my_database.db')
+
 
 # Configure the application
 app = Flask(__name__)
@@ -92,8 +100,12 @@ def requisition():
 @app.route("/delivery", methods=["GET", "POST"])
 def delivery():
     try:
-        connect = sqlite3.connect('C:/Users/prado/final_project_cs50/db/my_database.db')
+        # Agora, ao conectar ao banco de dados, usamos esse caminho relativo
+        # Abre a conexão com o banco
+        connect = sqlite3.connect(DATABASE_PATH)
+        # Cria um cursor para interagir com o banco
         cursor = connect.cursor()
+
         
         # Extrair a chave dinamicamente
         chave_dinamica = list(shared_parameters['resposta_api'].keys())[0]

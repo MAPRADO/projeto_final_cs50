@@ -1,18 +1,10 @@
 import os
-import sqlite3
+import psycopg2
 import requests
 import json
 from flask import Flask, jsonify, redirect, render_template, request
 from main_application import fplus
-
-# Connection with the database(conectando na rota delivery)
-#connect = sqlite3.connect('db/my_database.db')
-
-# Obtém o caminho completo do diretório onde o arquivo Python está localizado
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-# Constrói o caminho relativo para o banco de dados
-DATABASE_PATH = os.path.join(BASE_DIR, 'db', 'my_database.db')
+from create_new_bank import get_supabase_newBank
 
 
 # Configure the application
@@ -100,12 +92,9 @@ def requisition():
 @app.route("/delivery", methods=["GET", "POST"])
 def delivery():
     try:
-        # Agora, ao conectar ao banco de dados, usamos esse caminho relativo
-        # Abre a conexão com o banco
-        connect = sqlite3.connect(DATABASE_PATH)
-        # Cria um cursor para interagir com o banco
-        cursor = connect.cursor()
-
+        # Obtém a conexão com o banco de dados
+        conn = get_supabase_newBank()
+        cursor = conn.cursor()
         
         # Extrair a chave dinamicamente
         chave_dinamica = list(shared_parameters['resposta_api'].keys())[0]
@@ -136,13 +125,14 @@ def delivery():
         
         # Inserindo os valores no banco de dados
         valores_name = (name, selectBrand, selectModel, selectMotor,)
-        cursor.execute("INSERT INTO name (user_name, car_brand, model, motor) VALUES (?, ?, ?, ?)", valores_name)
-        name_id = cursor.lastrowid  # Obtendo o último id inserido
+        cursor.execute("INSERT INTO name (user_name, car_brand, model, motor) VALUES (%s, %s, %s, %s) RETURNING id", valores_name)
+        # Obtendo o último id inserido
+        name_id = cursor.fetchone()[0]
         
         valores_advantage = (alcohol, gasoline, advantage, name_id)
-        cursor.execute("INSERT INTO advantage (alcohol_value, gasoline_value, advantage, id_name) VALUES (?, ?, ?, ?)", valores_advantage)
+        cursor.execute("INSERT INTO advantage (alcohol_value, gasoline_value, advantage, id_name) VALUES (%s, %s, %s, %s)", valores_advantage)
         
-        connect.commit()
+        conn.commit()
         
         # Selecionar dados das tabelas name e advantage e carregar na página
         cursor.execute("""
@@ -156,13 +146,13 @@ def delivery():
         
         linhas = cursor.fetchall()
         
-    except sqlite3.Error as e:
+    except psycopg2.Error as e:
         # Log de erro para depuração
         app.logger.error(f"Erro ao acessar o banco de dados: {e}")
         return "Erro ao acessar o banco de dados", 500
 
     finally:
-        connect.close()
+        conn.close()
 
     return render_template('delivery.html', linhas=linhas)
     

@@ -16,4 +16,5 @@ venv/
 .env/
 db_baseline/
 __pycache__/
+.env
 

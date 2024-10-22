@@ -149,7 +149,8 @@ def delivery():
     except psycopg2.Error as e:
         # Log de erro para depuração
         app.logger.error(f"Erro ao acessar o banco de dados: {e}")
-        return "Erro ao acessar o banco de dados", 500
+        # return "Erro ao acessar o banco de dados", 500
+        return f"Erro ao acessar o banco de dados: {e}"
 
     finally:
         conn.close()

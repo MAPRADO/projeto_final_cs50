@@ -17,4 +17,5 @@ venv/
 db_baseline/
 __pycache__/
 .env
+build.sh
 

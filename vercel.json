@@ -18,6 +18,7 @@
     "env": {
         "PYTHON_VERSION": "3.10.5"
     },
-    "installCommand": "apt-get update && apt-get install -y python3-pip && pip3 install -r requirements.txt"
+    "installCommand": "apt-get update && apt-get install -y libpq-dev python3-pip && pip3 install -r requirements.txt"
+
 }
 

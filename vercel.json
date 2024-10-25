@@ -2,13 +2,6 @@
     "version": 2,
     "builds": [
         {
-            "src": "build.sh",
-            "use": "@vercel/static-build",
-            "config": {
-                "distDir": "dist"
-            }
-        },
-        {
             "src": "app_web.py",
             "use": "@vercel/python",
             "config": {
@@ -26,6 +19,5 @@
         "PYTHON_VERSION": "3.10.5"
     },
     "installCommand": "apt-get update && apt-get install -y python3-pip && pip3 install -r requirements.txt"
-
 }
 

@@ -18,5 +18,4 @@ db_baseline/
 __pycache__/
 .env
 build.sh
-vercel.json
 

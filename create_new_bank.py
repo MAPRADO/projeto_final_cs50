@@ -3,7 +3,20 @@ from psycopg2 import sql
 import os
 from dotenv import load_dotenv
 
-# Criar uma função que conecta ao banco de dados PostgreSQL local
+
+# Criar uma função que conecta ao banco PostgreSQL no Supabase
+def get_supabase_newBank():
+    conn = psycopg2.connect(
+        dbname=os.getenv("DB_NAME"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        host=os.getenv("DB_HOST"),
+        port=os.getenv("DB_PORT")
+    )
+    return conn
+
+
+""" # Criar uma função que conecta ao banco de dados PostgreSQL local
 def get_newBank():
     conn = psycopg2.connect(
         dbname=os.getenv("DB_NAME_LOCAL"), 
@@ -45,16 +58,4 @@ conn.commit()
 
 # Fechar cursor e conexão
 cursor.close()
-conn.close()
-
-
-# Criar uma função que conecta ao banco PostgreSQL no Supabase
-def get_supabase_newBank():
-    conn = psycopg2.connect(
-        dbname=os.getenv("DB_NAME"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
-        host=os.getenv("DB_HOST"),
-        port=os.getenv("DB_PORT")
-    )
-    return conn
+conn.close() """

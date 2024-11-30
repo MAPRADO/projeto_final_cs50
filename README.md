@@ -63,6 +63,9 @@ Então o sistema envia os dados para um banco de dados e em seguida apresenta es
 > O framework escolhido para criar a API foi o Flask, utilizando URL’s dinâmicas para cada entrega. O servidor escolhido para hospedar a API foi o PythonAnywhere.  
 > Foi utilizado dropdown com seleção em cascata ou vinculada, para minimizar os erros de digitação, uma vez que são 3 campos combinados para localizar o veículo e o volume de erros poderia passar a impressão de falha na API.
 
+**Tratando os dados no Jupyter Notebook** :point_down:
+![Tela do Jupyter Notebook](assets/jupyter_tratar_baseDados.png)
+
 ### Estrutura base do projeto
 
 > Abandonar o Firebase no meio do projeto e buscar outros servidores free. Heroku, Render e por fim adotar o Vercel.  
